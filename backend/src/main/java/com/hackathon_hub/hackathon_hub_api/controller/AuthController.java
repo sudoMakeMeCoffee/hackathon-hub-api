@@ -5,7 +5,9 @@ import com.hackathon_hub.hackathon_hub_api.dto.request.SignUpRequestDto;
 import com.hackathon_hub.hackathon_hub_api.dto.response.SignInResult;
 import com.hackathon_hub.hackathon_hub_api.dto.response.UserResponseDto;
 import com.hackathon_hub.hackathon_hub_api.dto.response.common.ApiResponse;
+import com.hackathon_hub.hackathon_hub_api.exception.UnauthorizedException;
 import com.hackathon_hub.hackathon_hub_api.service.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -50,6 +52,21 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE, signInResult.getCookie().toString())
                 .body(response);
     }
+
+    @PostMapping("/check-auth")
+    public ResponseEntity<ApiResponse<Object>> checkAuth(HttpServletRequest request) {
+        try {
+            UserResponseDto user = authService.checkAuth(request);
+
+            return ResponseEntity.ok(
+                    new ApiResponse<>(true, "Authorized", user)
+            );
+        } catch (UnauthorizedException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ApiResponse<>(false, ex.getMessage(), null));
+        }
+    }
+
 
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout() {

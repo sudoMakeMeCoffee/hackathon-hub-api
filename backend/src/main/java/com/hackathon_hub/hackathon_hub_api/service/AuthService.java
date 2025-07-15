@@ -6,8 +6,10 @@ import com.hackathon_hub.hackathon_hub_api.dto.response.SignInResult;
 import com.hackathon_hub.hackathon_hub_api.dto.response.UserResponseDto;
 import com.hackathon_hub.hackathon_hub_api.entity.User;
 import com.hackathon_hub.hackathon_hub_api.enums.Role;
+import com.hackathon_hub.hackathon_hub_api.exception.UnauthorizedException;
 import com.hackathon_hub.hackathon_hub_api.repository.UserRepository;
 import com.hackathon_hub.hackathon_hub_api.utils.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -71,6 +73,21 @@ public class AuthService {
                 .build();
 
 
+    }
+
+    public UserResponseDto checkAuth(HttpServletRequest request) {
+        String jwt = jwtUtil.extractJwtFromCookie(request);
+        String username = jwtUtil.extractEmail(jwt);
+
+        String email = jwtUtil.extractEmail(jwt);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UnauthorizedException("User not found"));
+
+        if (jwt == null || !jwtUtil.validateToken(jwt, UserResponseDto.fromEntity(user))) {
+            throw new UnauthorizedException("Invalid or missing token");
+        }
+
+        return UserResponseDto.fromEntity(user);
     }
 
     public ResponseCookie logout() {
