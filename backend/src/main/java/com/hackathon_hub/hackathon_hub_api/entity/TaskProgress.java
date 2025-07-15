@@ -1,4 +1,4 @@
-package com.hackathon_hub.hackathon_hub_api.model;
+package com.hackathon_hub.hackathon_hub_api.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
