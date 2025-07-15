@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class AuthService {
 
@@ -34,54 +35,52 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public UserResponseDto signup(SignUpRequestDto requestDto){
-        requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+//    public boolean verifyEmail(HttpServletRequest request, String code){
+//        String jwt = jwtUtil.extractJwtFromCookie(request);
+//        String email = jwtUtil.extractEmail(jwt);
+//
+//        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//
+//        if(Objects.equals(code, user.getCode())){
+//            user.setVerified(true);
+//            userRepository.save(user);
+//            return true;
+//        }
+//
+//        return false;
+//
+//    }
 
-        User user = User.builder()
-                .username(requestDto.getUsername())
-                .email(requestDto.getEmail())
-                .password(requestDto.getPassword())
-                .role(Role.EDITOR)
-                .build();
+    public UserResponseDto addUser(SignUpRequestDto requestDto) {
+        requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+        User user = User.builder().username(requestDto.getUsername()).email(requestDto.getEmail()).password(requestDto.getPassword()).role(Role.EDITOR).build();
 
         User createdUser = userRepository.save(user);
 
         return UserResponseDto.fromEntity(createdUser);
     }
 
-    public SignInResult signin(SignInRequestDto requestDto){
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(requestDto.getEmail(), requestDto.getPassword())
-        );
+    public SignInResult signin(SignInRequestDto requestDto) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(requestDto.getEmail(), requestDto.getPassword()));
 
         UserDetails userDetails = userService.loadUserByUsername(requestDto.getEmail());
         UserResponseDto user = userService.getUserByUsername(userDetails.getUsername());
         String token = jwtUtil.generateToken(userDetails);
-        
 
-        ResponseCookie cookie = ResponseCookie.from("jwt", token)
-                .httpOnly(true)
-                .secure(false)  // set to true in production
-                .path("/")
-                .maxAge(24 * 60 * 60)
-                .sameSite("Lax")
-                .build();
 
-        return SignInResult.builder()
-                .cookie(cookie)
-                .userResponseDto(user)
-                .build();
+        ResponseCookie cookie = ResponseCookie.from("jwt", token).httpOnly(true).secure(false)  // set to true in production
+                .path("/").maxAge(24 * 60 * 60).sameSite("Lax").build();
+
+        return SignInResult.builder().cookie(cookie).userResponseDto(user).build();
 
 
     }
 
     public UserResponseDto checkAuth(HttpServletRequest request) {
         String jwt = jwtUtil.extractJwtFromCookie(request);
-        String username = jwtUtil.extractEmail(jwt);
 
         String email = jwtUtil.extractEmail(jwt);
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UnauthorizedException("User not found"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UnauthorizedException("User not found"));
 
         if (jwt == null || !jwtUtil.validateToken(jwt, UserResponseDto.fromEntity(user))) {
             throw new UnauthorizedException("Invalid or missing token");
@@ -91,13 +90,7 @@ public class AuthService {
     }
 
     public ResponseCookie logout() {
-        return ResponseCookie.from("jwt", "")
-                .httpOnly(true)
-                .secure(false)
-                .path("/")
-                .maxAge(0)
-                .sameSite("Lax")
-                .build();
+        return ResponseCookie.from("jwt", "").httpOnly(true).secure(false).path("/").maxAge(0).sameSite("Lax").build();
     }
 
 }

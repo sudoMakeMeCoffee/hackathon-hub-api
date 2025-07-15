@@ -25,9 +25,9 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/add-user")
     public ResponseEntity<ApiResponse<UserResponseDto>> signup(@Valid @RequestBody SignUpRequestDto request){
-        UserResponseDto user = authService.signup(request);
+        UserResponseDto user = authService.addUser(request);
 
         ApiResponse<UserResponseDto> response = new ApiResponse<>(
                 true,
@@ -67,6 +67,28 @@ public class AuthController {
         }
     }
 
+
+//    @PostMapping("/verify-email")
+//    public ResponseEntity<ApiResponse<Object>> verifyEmail(HttpServletRequest request, @RequestBody String code){
+//        if(authService.verifyEmail(request, code)){
+//
+//            ApiResponse<Object> response = new ApiResponse<>(
+//                    true,
+//                    "Email verified successfully",
+//                    null
+//            );
+//
+//            return new ResponseEntity<ApiResponse<Object>>(response, HttpStatus.OK);
+//        }
+//
+//        ApiResponse<Object> response = new ApiResponse<>(
+//                false,
+//                "Incorrect OTP",
+//                null
+//        );
+//
+//        return new ResponseEntity<ApiResponse<Object>>(response, HttpStatus.BAD_REQUEST);
+//    }
 
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout() {
