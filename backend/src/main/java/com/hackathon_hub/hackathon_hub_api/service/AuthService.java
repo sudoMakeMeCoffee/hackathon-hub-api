@@ -72,4 +72,15 @@ public class AuthService {
 
 
     }
+
+    public ResponseCookie logout() {
+        return ResponseCookie.from("jwt", "")
+                .httpOnly(true)
+                .secure(false)
+                .path("/")
+                .maxAge(0)
+                .sameSite("Lax")
+                .build();
+    }
+
 }

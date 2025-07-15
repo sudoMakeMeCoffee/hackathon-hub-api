@@ -9,6 +9,7 @@ import com.hackathon_hub.hackathon_hub_api.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,6 +48,21 @@ public class AuthController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, signInResult.getCookie().toString())
+                .body(response);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse<Void>> logout() {
+        ResponseCookie cookie = authService.logout();
+
+        ApiResponse<Void> response = new ApiResponse<>(
+                true,
+                "Logged out successfully",
+                null
+        );
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, String.valueOf(cookie))
                 .body(response);
     }
 
