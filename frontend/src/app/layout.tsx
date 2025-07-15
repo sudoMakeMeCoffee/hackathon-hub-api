@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import {Open_Sans} from "next/font/google";
+import { Figtree } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./provider";
 
-const open_Sans = Open_Sans({
+const figtree = Figtree({
   subsets: ["latin"],
 });
 
@@ -18,10 +19,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${open_Sans.className} antialiased`}
-      >
-        {children}
+      <body className={`${figtree.className} antialiased`}>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
