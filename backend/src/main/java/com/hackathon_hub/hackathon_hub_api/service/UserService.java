@@ -1,8 +1,10 @@
 package com.hackathon_hub.hackathon_hub_api.service;
 
+import com.hackathon_hub.hackathon_hub_api.dto.response.UserResponseDto;
 import com.hackathon_hub.hackathon_hub_api.entity.User;
 import com.hackathon_hub.hackathon_hub_api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,17 +19,18 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email).orElse(null);
 
         if (user == null) {
-            throw  new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("User not found");
         }
 
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                user.getAuthorities()
-        );
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
 
+    }
+
+    public UserResponseDto getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found."));
+        return UserResponseDto.fromEntity(user);
     }
 }

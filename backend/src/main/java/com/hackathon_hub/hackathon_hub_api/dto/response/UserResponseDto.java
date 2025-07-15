@@ -24,4 +24,5 @@ public class UserResponseDto {
                 .role(user.getRole())
                 .build();
     }
+
 }

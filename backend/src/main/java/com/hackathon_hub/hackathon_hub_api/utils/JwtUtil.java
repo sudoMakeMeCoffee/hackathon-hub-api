@@ -1,10 +1,14 @@
 package com.hackathon_hub.hackathon_hub_api.utils;
 
+import com.hackathon_hub.hackathon_hub_api.dto.response.UserResponseDto;
+import com.hackathon_hub.hackathon_hub_api.repository.UserRepository;
+import com.hackathon_hub.hackathon_hub_api.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -15,19 +19,27 @@ import java.util.UUID;
 public class JwtUtil {
 
     private final String secret = "astringsecretatleastbitslonghsdjsjdsdjsbdjbscbsjscsc";
+    private final UserService userService;
 
-    public String extractUsername(String token) {
+    public JwtUtil(UserService userService) {
+        this.userService = userService;
+    }
+
+    public String extractEmail(String token) {
         return extractClaims(token).getSubject();
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) {
-        String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    public boolean validateToken(String token, UserResponseDto userResponseDto) {
+        String email = extractEmail(token);
+        return email.equals(userResponseDto.getEmail()) && !isTokenExpired(token);
     }
 
     public String generateToken(UserDetails userDetails) {
+
+        UserResponseDto user = userService.getUserByUsername(userDetails.getUsername());
+
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
+                .setSubject(user.getEmail())
                 .claim("roles", userDetails.getAuthorities())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 day

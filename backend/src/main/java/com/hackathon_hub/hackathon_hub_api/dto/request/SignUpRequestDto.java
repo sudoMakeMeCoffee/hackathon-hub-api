@@ -16,7 +16,7 @@ public class SignUpRequestDto {
 
     @Size(min = 3, message = "Username must have minimum 3 characters.")
     @NotBlank(message = "Username is required.")
-    private String Username;
+    private String username;
 
     @Email(message = "Enter a valid email.")
     private String email;

@@ -1,5 +1,6 @@
 package com.hackathon_hub.hackathon_hub_api.config;
 
+import com.hackathon_hub.hackathon_hub_api.dto.response.UserResponseDto;
 import com.hackathon_hub.hackathon_hub_api.service.UserService;
 import com.hackathon_hub.hackathon_hub_api.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
@@ -10,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -34,13 +34,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String jwt = null;
 
         String authHeader = request.getHeader("Authorization");
-        if(authHeader != null && authHeader.startsWith("Bearer ")){
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
-        }
-        else {
-            if(request.getCookies() != null){
-                for (Cookie cookie : request.getCookies()){
-                    if("jwt".equals(cookie.getName())){
+        } else {
+            if (request.getCookies() != null) {
+                for (Cookie cookie : request.getCookies()) {
+                    if ("jwt".equals(cookie.getName())) {
                         jwt = cookie.getValue();
                         break;
                     }
@@ -48,11 +47,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
         }
 
-        if(jwt != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            String username = jwtUtil.extractUsername(jwt);
-            UserDetails userDetails = userService.loadUserByUsername(username);
+        if (jwt != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            String email = jwtUtil.extractEmail(jwt);
+            UserDetails userDetails = userService.loadUserByUsername(email);
+            UserResponseDto user = userService.getUserByUsername(userDetails.getUsername());
 
-            if(jwtUtil.validateToken(jwt, userDetails)){
+
+            if (jwtUtil.validateToken(jwt, user)) {
+
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities()
                 );
