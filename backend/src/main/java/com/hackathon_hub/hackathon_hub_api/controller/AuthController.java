@@ -1,5 +1,6 @@
 package com.hackathon_hub.hackathon_hub_api.controller;
 
+import com.hackathon_hub.hackathon_hub_api.dto.request.ChangePasswordRequestDto;
 import com.hackathon_hub.hackathon_hub_api.dto.request.SignInRequestDto;
 import com.hackathon_hub.hackathon_hub_api.dto.request.SignUpRequestDto;
 import com.hackathon_hub.hackathon_hub_api.dto.response.SignInResult;
@@ -67,7 +68,18 @@ public class AuthController {
         }
     }
 
+    @PutMapping("/change-password")
+    public ResponseEntity<ApiResponse<Object>> changePassword(HttpServletRequest request, @RequestBody ChangePasswordRequestDto requestDto) throws Exception {
+        UserResponseDto user = authService.changePassword(request, requestDto);
 
+        ApiResponse<Object> response = new ApiResponse<>(
+                true,
+                "Password changed successfully",
+                user
+        );
+
+        return new ResponseEntity<ApiResponse<Object>>(response, HttpStatus.OK);
+    }
 //    @PostMapping("/verify-email")
 //    public ResponseEntity<ApiResponse<Object>> verifyEmail(HttpServletRequest request, @RequestBody String code){
 //        if(authService.verifyEmail(request, code)){

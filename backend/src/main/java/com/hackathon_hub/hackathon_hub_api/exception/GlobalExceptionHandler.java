@@ -1,5 +1,6 @@
 package com.hackathon_hub.hackathon_hub_api.exception;
 
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.hackathon_hub.hackathon_hub_api.dto.response.common.ApiResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -18,6 +19,13 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ApiResponse<Object>> invalidPasswordExceptionHandler(InvalidPasswordException ex){
+        ApiResponse<Object> response = new ApiResponse<>(false, ex.getMessage(), null);
+
+        return new ResponseEntity<ApiResponse<Object>>(response, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ApiResponse<Object>> usernameNotFondExceptionHandler(UsernameNotFoundException ex) {

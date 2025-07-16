@@ -1,11 +1,13 @@
 package com.hackathon_hub.hackathon_hub_api.service;
 
+import com.hackathon_hub.hackathon_hub_api.dto.request.ChangePasswordRequestDto;
 import com.hackathon_hub.hackathon_hub_api.dto.request.SignInRequestDto;
 import com.hackathon_hub.hackathon_hub_api.dto.request.SignUpRequestDto;
 import com.hackathon_hub.hackathon_hub_api.dto.response.SignInResult;
 import com.hackathon_hub.hackathon_hub_api.dto.response.UserResponseDto;
 import com.hackathon_hub.hackathon_hub_api.entity.User;
 import com.hackathon_hub.hackathon_hub_api.enums.Role;
+import com.hackathon_hub.hackathon_hub_api.exception.InvalidPasswordException;
 import com.hackathon_hub.hackathon_hub_api.exception.UnauthorizedException;
 import com.hackathon_hub.hackathon_hub_api.repository.UserRepository;
 import com.hackathon_hub.hackathon_hub_api.utils.JwtUtil;
@@ -14,8 +16,11 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 
 @Service
@@ -85,13 +90,33 @@ public class AuthService {
 
     public UserResponseDto checkAuth(HttpServletRequest request) {
         String jwt = jwtUtil.extractJwtFromCookie(request);
-
         String email = jwtUtil.extractEmail(jwt);
+
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UnauthorizedException("User not found"));
 
         if (jwt == null || !jwtUtil.validateToken(jwt, UserResponseDto.fromEntity(user))) {
             throw new UnauthorizedException("Invalid or missing token");
         }
+
+        return UserResponseDto.fromEntity(user);
+    }
+
+    public UserResponseDto changePassword(HttpServletRequest request, ChangePasswordRequestDto requestDto) throws Exception {
+        String jwt = jwtUtil.extractJwtFromCookie(request);
+        String email = jwtUtil.extractEmail(jwt);
+
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found."));
+
+        if (!passwordEncoder.matches(requestDto.getOldPassword(), user.getPassword())) {
+            throw new InvalidPasswordException("Old password is incorrect.");
+        }
+
+        if (passwordEncoder.matches(requestDto.getNewPassword(), user.getPassword())) {
+            throw new InvalidPasswordException("Old password and new password can not be same.");
+        }
+
+        user.setPassword(passwordEncoder.encode(requestDto.getNewPassword()));
+        userRepository.save(user);
 
         return UserResponseDto.fromEntity(user);
     }
