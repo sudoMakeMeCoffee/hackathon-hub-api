@@ -102,8 +102,7 @@ public class AuthService {
     }
 
     public UserResponseDto changePassword(HttpServletRequest request, ChangePasswordRequestDto requestDto) throws Exception {
-        String jwt = jwtUtil.extractJwtFromCookie(request);
-        String email = jwtUtil.extractEmail(jwt);
+        String email = jwtUtil.extractEmailFromCookie(request);
 
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found."));
 

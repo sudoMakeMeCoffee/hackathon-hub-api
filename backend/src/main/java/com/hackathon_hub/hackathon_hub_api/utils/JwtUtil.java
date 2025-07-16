@@ -63,6 +63,11 @@ public class JwtUtil {
         return null;
     }
 
+    public String extractEmailFromCookie(HttpServletRequest request){
+        String jwt = extractJwtFromCookie(request);
+        return  extractEmail(jwt);
+    }
+
 
     private boolean isTokenExpired(String token) {
         return extractClaims(token).getExpiration().before(new Date());
