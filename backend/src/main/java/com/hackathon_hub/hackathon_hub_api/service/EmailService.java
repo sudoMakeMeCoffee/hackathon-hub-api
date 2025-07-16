@@ -22,19 +22,21 @@ public class EmailService {
         this.templateEngine = templateEngine;
     }
 
-    public void sendEmail(String to, String subject, String body) {
+    public void sendEmail(String to, String subject, String username, String password) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
             helper.setTo(to);
-            helper.setSubject("Your Verification Code");
+            helper.setSubject(subject);
             helper.setFrom("no-reply@hackathonhub.com");
 
             Context context = new Context();
-            context.setVariable("code", body);
+            context.setVariable("username", username);
+            context.setVariable("email", to);
+            context.setVariable("password", password);
 
-            String htmlContent = templateEngine.process("verification-code", context);
+            String htmlContent = templateEngine.process("adduser", context);
             helper.setText(htmlContent, true); // send HTML
 
             mailSender.send(message);

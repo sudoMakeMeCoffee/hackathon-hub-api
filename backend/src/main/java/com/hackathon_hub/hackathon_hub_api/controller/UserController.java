@@ -17,8 +17,7 @@ public class UserController {
 
     @GetMapping("/user")
     public String hello() {
-        emailService.sendEmail("sithijakavee120@gmail.com", "Verification", "Hi this is your verification code");
-        return "Send email";
+        return "Hello";
     }
 
 }

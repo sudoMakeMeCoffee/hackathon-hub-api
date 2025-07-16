@@ -26,13 +26,15 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtUtil jwtUtil;
+    private final EmailService emailService;
 
-    public AuthService(PasswordEncoder passwordEncoder, UserRepository userRepository, AuthenticationManager authenticationManager, UserService userService, JwtUtil jwtUtil) {
+    public AuthService(PasswordEncoder passwordEncoder, UserRepository userRepository, AuthenticationManager authenticationManager, UserService userService, JwtUtil jwtUtil, EmailService emailService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.jwtUtil = jwtUtil;
+        this.emailService = emailService;
     }
 
 //    public boolean verifyEmail(HttpServletRequest request, String code){
@@ -52,10 +54,15 @@ public class AuthService {
 //    }
 
     public UserResponseDto addUser(SignUpRequestDto requestDto) {
-        requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
-        User user = User.builder().username(requestDto.getUsername()).email(requestDto.getEmail()).password(requestDto.getPassword()).role(Role.EDITOR).build();
+
+        String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
+
+        User user = User.builder().username(requestDto.getUsername()).email(requestDto.getEmail()).password(encodedPassword).role(Role.EDITOR).build();
+
 
         User createdUser = userRepository.save(user);
+
+        emailService.sendEmail(user.getEmail(), "Welcome to Hackathon Hub Platform", user.getUsername(), requestDto.getPassword());
 
         return UserResponseDto.fromEntity(createdUser);
     }
