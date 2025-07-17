@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
     private final AuthService authService;
@@ -27,27 +28,25 @@ public class AuthController {
     }
 
     @PostMapping("/add-user")
-    public ResponseEntity<ApiResponse<UserResponseDto>> signup(@Valid @RequestBody SignUpRequestDto request){
+    public ResponseEntity<ApiResponse<UserResponseDto>> signup(@Valid @RequestBody SignUpRequestDto request) {
         UserResponseDto user = authService.addUser(request);
 
         ApiResponse<UserResponseDto> response = new ApiResponse<>(
                 true,
                 "Account created successfully",
-                user
-        );
+                user);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<ApiResponse<Object>> signin(@Valid @RequestBody SignInRequestDto request){
+    public ResponseEntity<ApiResponse<Object>> signin(@Valid @RequestBody SignInRequestDto request) {
         SignInResult signInResult = authService.signin(request);
 
         ApiResponse<Object> response = new ApiResponse<>(
                 true,
                 "Login successful.",
-                signInResult.getUserResponseDto()
-        );
+                signInResult.getUserResponseDto());
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, signInResult.getCookie().toString())
@@ -60,8 +59,7 @@ public class AuthController {
             UserResponseDto user = authService.checkAuth(request);
 
             return ResponseEntity.ok(
-                    new ApiResponse<>(true, "Authorized", user)
-            );
+                    new ApiResponse<>(true, "Authorized", user));
         } catch (UnauthorizedException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new ApiResponse<>(false, ex.getMessage(), null));
@@ -69,38 +67,40 @@ public class AuthController {
     }
 
     @PutMapping("/change-password")
-    public ResponseEntity<ApiResponse<Object>> changePassword(HttpServletRequest request, @RequestBody ChangePasswordRequestDto requestDto) throws Exception {
+    public ResponseEntity<ApiResponse<Object>> changePassword(HttpServletRequest request,
+            @RequestBody ChangePasswordRequestDto requestDto) throws Exception {
         UserResponseDto user = authService.changePassword(request, requestDto);
 
         ApiResponse<Object> response = new ApiResponse<>(
                 true,
                 "Password changed successfully",
-                user
-        );
+                user);
 
         return new ResponseEntity<ApiResponse<Object>>(response, HttpStatus.OK);
     }
-//    @PostMapping("/verify-email")
-//    public ResponseEntity<ApiResponse<Object>> verifyEmail(HttpServletRequest request, @RequestBody String code){
-//        if(authService.verifyEmail(request, code)){
-//
-//            ApiResponse<Object> response = new ApiResponse<>(
-//                    true,
-//                    "Email verified successfully",
-//                    null
-//            );
-//
-//            return new ResponseEntity<ApiResponse<Object>>(response, HttpStatus.OK);
-//        }
-//
-//        ApiResponse<Object> response = new ApiResponse<>(
-//                false,
-//                "Incorrect OTP",
-//                null
-//        );
-//
-//        return new ResponseEntity<ApiResponse<Object>>(response, HttpStatus.BAD_REQUEST);
-//    }
+    // @PostMapping("/verify-email")
+    // public ResponseEntity<ApiResponse<Object>> verifyEmail(HttpServletRequest
+    // request, @RequestBody String code){
+    // if(authService.verifyEmail(request, code)){
+    //
+    // ApiResponse<Object> response = new ApiResponse<>(
+    // true,
+    // "Email verified successfully",
+    // null
+    // );
+    //
+    // return new ResponseEntity<ApiResponse<Object>>(response, HttpStatus.OK);
+    // }
+    //
+    // ApiResponse<Object> response = new ApiResponse<>(
+    // false,
+    // "Incorrect OTP",
+    // null
+    // );
+    //
+    // return new ResponseEntity<ApiResponse<Object>>(response,
+    // HttpStatus.BAD_REQUEST);
+    // }
 
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout() {
@@ -109,13 +109,11 @@ public class AuthController {
         ApiResponse<Void> response = new ApiResponse<>(
                 true,
                 "Logged out successfully",
-                null
-        );
+                null);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, String.valueOf(cookie))
                 .body(response);
     }
-
 
 }
