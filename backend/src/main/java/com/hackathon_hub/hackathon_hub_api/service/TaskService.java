@@ -13,6 +13,7 @@ import java.util.UUID;
 @Service
 public interface TaskService {
     public TaskResponseDto createTask(TaskRequestDto task);
+    public List<TaskResponseDto> getAllTasks();
     public TaskResponseDto getTaskById(UUID id);
     public void deleteTaskById(UUID id);
 }

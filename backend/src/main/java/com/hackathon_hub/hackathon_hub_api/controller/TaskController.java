@@ -39,6 +39,19 @@ public class TaskController {
 
     }
 
+    @GetMapping
+    public ResponseEntity<ApiResponse<Object>> getAllTasks(){
+        List<TaskResponseDto> allTasks = taskService.getAllTasks();
+
+        ApiResponse<Object> response = new ApiResponse<>(
+                true,
+                "success",
+                allTasks
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Object>> getTaskById(@PathVariable UUID id) {
         TaskResponseDto task = taskService.getTaskById(id);

@@ -63,6 +63,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<TaskResponseDto> getAllTasks() {
+        List<Task> allTasks = taskRepository.findAll();
+
+        return allTasks.stream().map(TaskResponseDto::fromEntity).toList();
+    }
+
+    @Override
     public TaskResponseDto getTaskById(UUID id) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("Task with this id not found."));
 
