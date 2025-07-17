@@ -32,3 +32,11 @@ build/
 ### VS Code ###
 .vscode/
 
+
+src/main/resources/application.properties
+
+
+# macOS system file
+.DS_Store
+**/.DS_Store
+
