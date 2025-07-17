@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,12 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
 
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiResponse<Object>> MethodArgumentTypeMismatchExceptionHandler(MethodArgumentTypeMismatchException ex){
+        ApiResponse<Object> response = new ApiResponse<>(false, "Invalid ID", null);
+
+        return new ResponseEntity<ApiResponse<Object>>(response, HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(TaskNotFoundException.class)
     public ResponseEntity<ApiResponse<Object>> taskNotFoundExceptionHandler(TaskNotFoundException ex){
         ApiResponse<Object> response = new ApiResponse<>(false, ex.getMessage(), null);

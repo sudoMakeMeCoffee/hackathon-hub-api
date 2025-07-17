@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,5 +42,12 @@ public class UserService implements UserDetailsService {
         List<User> allUsers = userRepository.findAll();
 
         return allUsers.stream().map(UserResponseDto::fromEntity).toList();
+    }
+
+    public UserResponseDto getUserById(UUID id){
+        User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found with this id."));
+
+        return UserResponseDto.fromEntity(user);
+
     }
 }
