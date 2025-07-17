@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/task")
@@ -24,9 +25,9 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Object>> createTask(@RequestBody TaskRequestDto taskRequestDto){
+    public ResponseEntity<ApiResponse<Object>> createTask(@RequestBody TaskRequestDto taskRequestDto) {
 
-        TaskResponseDto taskResponseDto =  taskService.createTask(taskRequestDto);
+        TaskResponseDto taskResponseDto = taskService.createTask(taskRequestDto);
 
         ApiResponse<Object> response = new ApiResponse<>(
                 true,
@@ -36,5 +37,17 @@ public class TaskController {
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
 
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> getTaskById(@PathVariable UUID id) {
+        TaskResponseDto task = taskService.getTaskById(id);
+        ApiResponse<Object> response = new ApiResponse<>(
+                true,
+                "success",
+                task
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

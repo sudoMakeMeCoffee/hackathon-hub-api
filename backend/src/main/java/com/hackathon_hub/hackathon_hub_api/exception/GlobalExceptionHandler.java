@@ -20,6 +20,14 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<ApiResponse<Object>> taskNotFoundExceptionHandler(TaskNotFoundException ex){
+        ApiResponse<Object> response = new ApiResponse<>(false, ex.getMessage(), null);
+
+        return new ResponseEntity<ApiResponse<Object>>(response, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(InvalidPasswordException.class)
     public ResponseEntity<ApiResponse<Object>> invalidPasswordExceptionHandler(InvalidPasswordException ex){
         ApiResponse<Object> response = new ApiResponse<>(false, ex.getMessage(), null);

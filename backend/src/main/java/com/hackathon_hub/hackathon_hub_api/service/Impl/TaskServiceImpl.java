@@ -6,15 +6,13 @@ import com.hackathon_hub.hackathon_hub_api.dto.response.TaskResponseDto;
 import com.hackathon_hub.hackathon_hub_api.entity.SubTask;
 import com.hackathon_hub.hackathon_hub_api.entity.Task;
 import com.hackathon_hub.hackathon_hub_api.entity.User;
+import com.hackathon_hub.hackathon_hub_api.exception.TaskNotFoundException;
 import com.hackathon_hub.hackathon_hub_api.repository.TaskRepository;
 import com.hackathon_hub.hackathon_hub_api.repository.UserRepository;
 import com.hackathon_hub.hackathon_hub_api.service.TaskService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -62,5 +60,12 @@ public class TaskServiceImpl implements TaskService {
 
         return TaskResponseDto.fromEntity(task);
 
+    }
+
+    @Override
+    public TaskResponseDto getTaskById(UUID id) {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException("Task with this id not found."));
+
+        return TaskResponseDto.fromEntity(task);
     }
 }
