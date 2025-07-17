@@ -50,4 +50,16 @@ public class TaskController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> deleteTaskById(@PathVariable UUID id) {
+        taskService.deleteTaskById(id);
+        ApiResponse<Object> response = new ApiResponse<>(
+                true,
+                "Task deleted successfully",
+                null
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

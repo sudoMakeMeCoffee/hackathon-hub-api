@@ -14,4 +14,5 @@ import java.util.UUID;
 public interface TaskService {
     public TaskResponseDto createTask(TaskRequestDto task);
     public TaskResponseDto getTaskById(UUID id);
+    public void deleteTaskById(UUID id);
 }

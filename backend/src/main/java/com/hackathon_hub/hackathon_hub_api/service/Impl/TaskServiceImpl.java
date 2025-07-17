@@ -68,4 +68,9 @@ public class TaskServiceImpl implements TaskService {
 
         return TaskResponseDto.fromEntity(task);
     }
+
+    @Override
+    public void deleteTaskById(UUID id) {
+        taskRepository.deleteById(id);
+    }
 }
