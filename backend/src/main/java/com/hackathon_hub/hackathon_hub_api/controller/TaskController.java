@@ -9,26 +9,11 @@ import java.util.List;
 
 @RestController
 public class TaskController {
-    @Autowired
-    private TaskService taskService;
 
-    @PostMapping("/task")
-    public Task addTask(@RequestBody Task task) {
-        return taskService.addTask(task);
-    }
+    private final TaskService taskService;
 
-    @GetMapping("/task")
-    public List<Task> getTasks() {
-        return taskService.getTasks();
-    }
 
-//    @PutMapping("/task")
-//    public Task updateTask(@RequestBody Task task) {
-//        return taskService.updateTask(task);
-//    }
-
-    @GetMapping("/task/{id}")
-    public Boolean deleteTask(@PathVariable int id) {
-        return taskService.deleteTask(id);
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
     }
 }

@@ -1,6 +1,6 @@
 package com.hackathon_hub.hackathon_hub_api.controller;
 
-import com.hackathon_hub.hackathon_hub_api.service.EmailService;
+import com.hackathon_hub.hackathon_hub_api.service.Impl.EmailServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class UserController {
 
-    private final EmailService emailService;
+    private final EmailServiceImpl emailService;
 
-    public UserController(EmailService emailService) {
+    public UserController(EmailServiceImpl emailService) {
         this.emailService = emailService;
     }
 

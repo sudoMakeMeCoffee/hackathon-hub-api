@@ -1,33 +1,24 @@
 package com.hackathon_hub.hackathon_hub_api.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
-@Table(name = "tasks")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(length = 24, nullable = false, unique = true)
-    private String name;
-
-    @Column(length = 192)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    private User creator;
+    private String title;
     private String description;
-
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TaskProgress> progresses = new ArrayList<>();
-
+    private List<User> assignees;
+//    private List<SubTask> subTasks;
 }

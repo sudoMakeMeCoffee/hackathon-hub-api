@@ -10,22 +10,10 @@ import java.util.List;
 @Service
 public class TaskService {
 
-    @Autowired
-    private TaskRepository taskRepository;
 
-    public Task addTask (Task task) {
-        return taskRepository.save(task);
-    }
+    private final TaskRepository taskRepository;
 
-    public List<Task> getTasks () {
-        return taskRepository.findAll();
-    }
-
-//    public Task updateTask(Task task) {
-//    }
-
-    public Boolean deleteTask (int id) {
-        taskRepository.deleteById((id));
-        return true;
+    public TaskService(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
     }
 }
