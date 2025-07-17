@@ -2,17 +2,16 @@ package com.hackathon_hub.hackathon_hub_api.controller;
 
 import com.hackathon_hub.hackathon_hub_api.dto.response.UserResponseDto;
 import com.hackathon_hub.hackathon_hub_api.dto.response.common.ApiResponse;
+import com.hackathon_hub.hackathon_hub_api.entity.User;
 import com.hackathon_hub.hackathon_hub_api.service.Impl.EmailServiceImpl;
 import com.hackathon_hub.hackathon_hub_api.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -48,6 +47,17 @@ public class UserController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserResponseDto>> searchUsers(@RequestParam String q) {
+        List<User> users = userService.searchUsersByUsername(q);
+        List<UserResponseDto> result = users.stream()
+                .map(UserResponseDto::fromEntity)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(result);
+    }
+
 
 
 }

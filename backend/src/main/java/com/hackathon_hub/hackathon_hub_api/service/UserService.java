@@ -50,4 +50,8 @@ public class UserService implements UserDetailsService {
         return UserResponseDto.fromEntity(user);
 
     }
+
+    public List<User> searchUsersByUsername(String q) {
+        return userRepository.findByUsernameStartingWithIgnoreCase(q);
+    }
 }
