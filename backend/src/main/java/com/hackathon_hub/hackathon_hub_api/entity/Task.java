@@ -8,6 +8,8 @@ import java.util.*;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Task {
 
@@ -16,6 +18,8 @@ public class Task {
     private UUID id;
 
     private String title;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)

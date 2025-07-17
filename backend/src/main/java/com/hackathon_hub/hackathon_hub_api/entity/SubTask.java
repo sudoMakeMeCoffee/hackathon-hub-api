@@ -1,9 +1,7 @@
 package com.hackathon_hub.hackathon_hub_api.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +10,8 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class SubTask {
     @Id
@@ -19,6 +19,8 @@ public class SubTask {
     private UUID id;
 
     private String title;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @ManyToOne
