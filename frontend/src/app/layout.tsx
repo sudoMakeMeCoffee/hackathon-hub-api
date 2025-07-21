@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${figtree.className} antialiased`}>
+      <body className={`${figtree.className} antialiased select-none`}>
         <Providers>{children}</Providers>
       </body>
     </html>

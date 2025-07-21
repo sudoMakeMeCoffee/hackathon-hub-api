@@ -29,7 +29,7 @@ const Team = () => {
   return (
     <div
       id="team"
-      className="relative w-full flex flex-col items-start px-4 py-20 bg-radial-[at_25%_25%] from-white to-zinc-900 to-75%"
+      className="relative w-full flex flex-col items-start px-4 py-20 bg-white"
     >
       <div className="text-black text-8xl mb-8">Team</div>
       <div className="text-black text-4xl mb-2 max-w-3xl">
@@ -47,7 +47,7 @@ const Team = () => {
         {team.map((member, index) => (
           <div
             key={index}
-            className={`${member.coordinates} flex flex-col justify-end items-start bg-white h-120 w-100 p-2`}
+            className={`${member.coordinates} flex flex-col justify-end items-start bg-white border-2 border-black h-120 w-100 p-2`}
           >
             <div className="text-4xl">{member.name}</div>
             <div className="text-2xl">{member.position}</div>

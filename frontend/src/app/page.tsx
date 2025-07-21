@@ -2,11 +2,12 @@ import Link from "next/link";
 import Team from "@/components/Team";
 import Events from "@/components/Events";
 import Testimonials from "@/components/Testimonials";
+import AlgoXplore from "@/components/AlgoXplore";
 
 export default function Home() {
   return (
     <div>
-      <div className="relative w-full h-screen overflow-hidden">
+      <div id="home" className="relative w-full h-screen overflow-hidden">
         <video
           className="absolute top-0 left-0 w-full h-full object-cover"
           width="1920"
@@ -44,22 +45,21 @@ export default function Home() {
           <Link href="#contact" className="text-white text-3xl text-center m-4">
             Contact
           </Link>
+          <Link
+            href="#algoxplore"
+            className="text-white text-3xl text-center m-4"
+          >
+            AlgoXplore 1.0
+          </Link>
         </div>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-16 h-16 text-white cursor-pointer animate-bounce"
-        >
-          <path d="M4 3C3.44772 3 3 3.44772 3 4V20C3 20.5523 3.44772 21 4 21H20C20.5523 21 21 20.5523 21 20V4C21 3.44772 20.5523 3 20 3H4ZM11.9996 17.656L6.0498 11.7062H10.9996V6.34229H12.9996V11.7062H17.9493L11.9996 17.656Z"></path>
-        </svg>
       </div>
       <Team />
       <Events />
       <Testimonials />
+      <AlgoXplore />
       <div
         id="contact"
-        className="flex flex-col bg-black text-white w-full items-start px-4 py-20"
+        className="relative flex flex-col bg-black text-white w-full items-start px-4 py-20"
       >
         <div className="text-8xl mb-8">Contact</div>
         <div className="flex gap-30">
