@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Bebas_Neue } from "next/font/google";
 import "./globals.css";
-import { Providers } from "./provider";
+// import { Providers } from "./provider";
 
 const figtree = Bebas_Neue({
   subsets: ["latin"],
@@ -27,7 +27,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${figtree.className} antialiased select-none`}>
-        <Providers>{children}</Providers>
+        {/* <Providers>{children}</Providers> */}
+        {children}
       </body>
     </html>
   );
