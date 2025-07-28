@@ -41,6 +41,7 @@ const Events = () => {
 
   const readEvents = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.get(`${process.env.NEXT_PUBLIC_API}event`);
       setEvents(response.data.data);
     } catch (e) {
