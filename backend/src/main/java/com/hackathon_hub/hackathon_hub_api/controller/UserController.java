@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,39 +26,40 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<UserResponseDto>>> getAllUsers(){
+    public ResponseEntity<ApiResponse<List<UserResponseDto>>> getAllUsers() {
         List<UserResponseDto> allUsers = userService.getAllUsers();
         ApiResponse<List<UserResponseDto>> response = new ApiResponse<>(
                 true,
-                "success",
-                allUsers
-        );
+                "Users retieved successfully.",
+                allUsers);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Object>> getUserById(@PathVariable UUID id){
+    public ResponseEntity<ApiResponse<Object>> getUserById(@PathVariable UUID id) {
         UserResponseDto user = userService.getUserById(id);
         ApiResponse<Object> response = new ApiResponse<>(
                 true,
                 "success",
-                user
-        );
+                user);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<UserResponseDto>> searchUsers(@RequestParam String q) {
+    public ResponseEntity<ApiResponse<List<UserResponseDto>>> searchUsers(@RequestParam String q) {
         List<User> users = userService.searchUsersByUsername(q);
         List<UserResponseDto> result = users.stream()
                 .map(UserResponseDto::fromEntity)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(result);
+        ApiResponse<List<UserResponseDto>> response = new ApiResponse<>(
+                true,
+                "Users searched successfully",
+                result);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
 
 }
