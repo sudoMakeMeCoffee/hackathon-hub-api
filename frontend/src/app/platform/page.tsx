@@ -3,7 +3,7 @@ import { useState } from "react";
 import Users from "./Users";
 import Events from "./Events";
 import Testimonials from "./Testimonials";
-import Task from "./Task";
+import Tasks from "./Tasks";
 import { Inter } from "next/font/google";
 
 const inter = Inter({
@@ -30,7 +30,7 @@ const NavMenu = () => {
     },
   ];
 
-  const [activeTab, setActiveTab] = useState(tabs[0].name);
+  const [activeTab, setActiveTab] = useState(tabs[3].name);
 
   return (
     <div className={`${inter.className}`}>
@@ -50,7 +50,7 @@ const NavMenu = () => {
         {activeTab === "Users" && <Users />}
         {activeTab === "Events" && <Events />}
         {activeTab === "Testimonials" && <Testimonials />}
-        {activeTab === "Task" && <Task />}
+        {activeTab === "Tasks" && <Tasks />}
       </div>
     </div>
   );
