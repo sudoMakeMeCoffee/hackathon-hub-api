@@ -12,7 +12,6 @@ import java.util.UUID;
 public class TaskRequestDto {
     private String title;
     private String description;
-    private LocalDateTime createdAt;
     private LocalDateTime deadline;
     private boolean isCompleted;
     private List<SubTaskRequestDto> subTasks;

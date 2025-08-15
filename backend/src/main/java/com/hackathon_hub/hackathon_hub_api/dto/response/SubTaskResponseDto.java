@@ -19,7 +19,6 @@ public class SubTaskResponseDto {
     private UUID id;
     private String title;
     private String description;
-    private LocalDateTime createdAt;
     private LocalDateTime deadline;
     private boolean isCompleted;
     private List<UserResponseDto> subTaskAssignees;
@@ -34,7 +33,6 @@ public class SubTaskResponseDto {
                 subTask.getId(),
                 subTask.getTitle(),
                 subTask.getDescription(),
-                subTask.getCreatedAt(),
                 subTask.getDeadline(),
                 subTask.isCompleted(),
                 assignees);

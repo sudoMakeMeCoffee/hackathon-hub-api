@@ -19,7 +19,6 @@ public class TaskResponseDto {
         private UUID id;
         private String title;
         private String description;
-        private LocalDateTime createdAt;
         private LocalDateTime deadline;
         private boolean isCompleted;
         private List<UserResponseDto> taskAssignees;
@@ -39,7 +38,6 @@ public class TaskResponseDto {
                                 task.getId(),
                                 task.getTitle(),
                                 task.getDescription(),
-                                task.getCreatedAt(),
                                 task.getDeadline(),
                                 task.isCompleted(),
                                 users,

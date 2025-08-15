@@ -12,7 +12,6 @@ import java.util.UUID;
 public class SubTaskRequestDto {
     private String title;
     private String description;
-    private LocalDateTime createdAt;
     private LocalDateTime deadline;
     private boolean isCompleted;
     private List<UUID> assigneeIds;

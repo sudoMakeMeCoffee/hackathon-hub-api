@@ -2,6 +2,8 @@ package com.hackathon_hub.hackathon_hub_api.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -25,9 +27,6 @@ public class SubTask {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
     private LocalDateTime deadline;
 
     @Column(nullable = false)
@@ -40,4 +39,10 @@ public class SubTask {
     @ManyToMany
     @JoinTable(name = "subtask_user", joinColumns = @JoinColumn(name = "subtask_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> assignedUsers = new HashSet<>();
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
