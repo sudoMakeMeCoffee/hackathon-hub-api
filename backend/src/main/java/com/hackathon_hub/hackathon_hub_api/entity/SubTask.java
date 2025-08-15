@@ -31,7 +31,7 @@ public class SubTask {
     private LocalDateTime deadline;
 
     @Column(nullable = false)
-    final boolean isCompleted = false;
+    private boolean isCompleted = false;
 
     @ManyToOne
     @JoinColumn(name = "task_id")
@@ -39,5 +39,5 @@ public class SubTask {
 
     @ManyToMany
     @JoinTable(name = "subtask_user", joinColumns = @JoinColumn(name = "subtask_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    final Set<User> assignedUsers = new HashSet<>();
+    private Set<User> assignedUsers = new HashSet<>();
 }

@@ -30,12 +30,12 @@ public class Task {
     private LocalDateTime deadline;
 
     @Column(nullable = false)
-    final boolean isCompleted = false;
+    private boolean isCompleted = false;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    final List<SubTask> subtasks = new ArrayList<>();
+    private List<SubTask> subtasks = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(name = "task_user", joinColumns = @JoinColumn(name = "task_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    final Set<User> assignedUsers = new HashSet<>();
+    private Set<User> assignedUsers = new HashSet<>();
 }
