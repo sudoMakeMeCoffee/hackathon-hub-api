@@ -31,7 +31,7 @@ public class PostServiceImpl implements PostService {
                 .caption(request.getCaption())
                 .imagePath(imagePath)
                 .createdBy(user) // set creator
-                .approved(false) // default false
+                .approved(true) // default false
                 .build();
 
         return postRepository.save(post);

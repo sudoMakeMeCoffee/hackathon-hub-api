@@ -20,6 +20,7 @@ public class Post {
     @GeneratedValue
     private UUID id; // UUID primary key
 
+    @Column(columnDefinition = "TEXT")
     private String caption;
 
     private String imagePath;
