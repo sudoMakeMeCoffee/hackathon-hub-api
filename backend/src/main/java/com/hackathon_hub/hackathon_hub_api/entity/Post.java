@@ -35,5 +35,5 @@ public class Post {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    private boolean approved = true; // default false for future moderation
+    private boolean approved = true; 
 }

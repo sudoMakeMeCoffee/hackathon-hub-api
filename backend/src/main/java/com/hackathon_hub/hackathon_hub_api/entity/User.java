@@ -10,10 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Setter
@@ -43,6 +40,9 @@ public class User implements UserDetails {
 
     @ManyToMany(mappedBy = "assignedUsers")
     private Set<SubTask> subtasks;
+
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.REMOVE)
+    private Set<Post> posts = new HashSet<>();
 
     @Column(updatable = false)
     @CreationTimestamp
