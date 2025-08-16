@@ -62,4 +62,16 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> deleteUserById(@PathVariable UUID id) {
+        userService.deleteUserById(id);
+
+        ApiResponse<Object> response = new ApiResponse<>(
+                true,
+                "Users searched successfully",
+                null);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }
