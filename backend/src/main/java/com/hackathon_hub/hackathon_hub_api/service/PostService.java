@@ -4,6 +4,9 @@ import com.hackathon_hub.hackathon_hub_api.dto.request.CreatePostRequestDto;
 import com.hackathon_hub.hackathon_hub_api.entity.Post;
 import com.hackathon_hub.hackathon_hub_api.entity.User;
 
+import java.util.List;
+
 public interface PostService {
     Post createPost(CreatePostRequestDto request, User user) throws Exception;
+    public List<Post> getAllPosts();
 }

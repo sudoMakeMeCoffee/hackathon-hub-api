@@ -51,8 +51,18 @@ public class UserService implements UserDetailsService {
 
     }
 
-    public void deleteUserById(UUID id){
-        userRepository.deleteById(id);
+    public void deleteUserById(UUID userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.getTasks().forEach(task -> task.getAssignedUsers().remove(user));
+
+        user.getSubtasks().forEach(subtask -> subtask.getAssignedUsers().remove(user));
+
+        user.getTasks().clear();
+        user.getSubtasks().clear();
+
+        userRepository.delete(user);
     }
 
     public List<User> searchUsersByUsername(String q) {

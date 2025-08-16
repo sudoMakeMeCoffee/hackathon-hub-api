@@ -8,6 +8,8 @@ import com.hackathon_hub.hackathon_hub_api.service.FileService;
 import com.hackathon_hub.hackathon_hub_api.service.PostService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostServiceImpl implements PostService {
 
@@ -36,6 +38,12 @@ public class PostServiceImpl implements PostService {
 
         return postRepository.save(post);
     }
+
+    @Override
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
+    }
+
 
 
 
