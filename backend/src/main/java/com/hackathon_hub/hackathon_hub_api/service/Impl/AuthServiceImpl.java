@@ -110,14 +110,6 @@ public class AuthServiceImpl implements AuthService {
 
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found."));
 
-        if (!passwordEncoder.matches(requestDto.getOldPassword(), user.getPassword())) {
-            throw new InvalidPasswordException("Old password is incorrect.");
-        }
-
-        if (passwordEncoder.matches(requestDto.getNewPassword(), user.getPassword())) {
-            throw new InvalidPasswordException("Old password and new password can not be same.");
-        }
-
         user.setPassword(passwordEncoder.encode(requestDto.getNewPassword()));
         userRepository.save(user);
 
