@@ -15,5 +15,6 @@ public interface TaskService {
     public TaskResponseDto createTask(TaskRequestDto task);
     public List<TaskResponseDto> getAllTasks();
     public TaskResponseDto getTaskById(UUID id);
+    public TaskResponseDto markSubTaskComplete(UUID id, UUID subTaskId);
     public void deleteTaskById(UUID id);
 }

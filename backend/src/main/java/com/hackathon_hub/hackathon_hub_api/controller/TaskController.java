@@ -64,6 +64,20 @@ public class TaskController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PutMapping("/{taskId}/subtasks/{subTaskId}/complete")
+    public ResponseEntity<ApiResponse<Object>> completeSubTask(
+            @PathVariable UUID taskId,
+            @PathVariable UUID subTaskId){
+        TaskResponseDto task = taskService.markSubTaskComplete(taskId, subTaskId);
+        ApiResponse<Object> response = new ApiResponse<>(
+                true,
+                "success",
+                task
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Object>> deleteTaskById(@PathVariable UUID id) {
         taskService.deleteTaskById(id);
