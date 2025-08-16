@@ -9,6 +9,7 @@ import com.hackathon_hub.hackathon_hub_api.entity.User;
 import com.hackathon_hub.hackathon_hub_api.exception.TaskNotFoundException;
 import com.hackathon_hub.hackathon_hub_api.repository.TaskRepository;
 import com.hackathon_hub.hackathon_hub_api.repository.UserRepository;
+import com.hackathon_hub.hackathon_hub_api.service.EmailService;
 import com.hackathon_hub.hackathon_hub_api.service.TaskService;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +20,12 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
-    public TaskServiceImpl(TaskRepository taskRepository, UserRepository userRepository) {
+    public TaskServiceImpl(TaskRepository taskRepository, UserRepository userRepository, EmailService emailService) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
+        this.emailService = emailService;
     }
 
     @Override
@@ -57,6 +60,10 @@ public class TaskServiceImpl implements TaskService {
         task.setSubtasks(subTasks);
 
         Task createdTask =  taskRepository.save(task);
+
+        for (User user : taskAssignees){
+            emailService.sendTaskEmail(user.getEmail(), "New Task", user,createdTask);
+        }
 
         return TaskResponseDto.fromEntity(task);
 

@@ -68,7 +68,7 @@ public class AuthServiceImpl implements AuthService {
 
         User createdUser = userRepository.save(user);
 
-        emailService.sendEmail(user.getEmail(), "Welcome to Hackathon Hub Platform", user.getUsername(), requestDto.getPassword());
+        emailService.sendAddUserEmail(user.getEmail(), "Welcome to Hackathon Hub Platform", user.getUsername(), requestDto.getPassword());
 
         return UserResponseDto.fromEntity(createdUser);
     }
