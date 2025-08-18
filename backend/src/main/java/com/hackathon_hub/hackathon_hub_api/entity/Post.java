@@ -35,5 +35,5 @@ public class Post {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    private boolean approved = true; 
+    private boolean approved = true;
 }

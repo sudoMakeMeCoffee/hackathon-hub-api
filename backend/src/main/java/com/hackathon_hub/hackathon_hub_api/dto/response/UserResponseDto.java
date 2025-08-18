@@ -14,6 +14,7 @@ public class UserResponseDto {
     private UUID id;
     private String username;
     private String email;
+    private String position;
     private Role role;
 
     public static UserResponseDto fromEntity(User user){
@@ -22,6 +23,7 @@ public class UserResponseDto {
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .role(user.getRole())
+                .position(user.getPosition())
                 .build();
     }
 
