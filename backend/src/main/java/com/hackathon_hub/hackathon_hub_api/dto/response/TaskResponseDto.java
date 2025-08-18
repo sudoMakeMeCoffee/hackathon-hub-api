@@ -28,7 +28,7 @@ public class TaskResponseDto {
 
                 List<UserResponseDto> users = task.getAssignedUsers().stream()
                                 .map(user -> new UserResponseDto(user.getId(), user.getUsername(), user.getEmail(),
-                                                user.getRole()))
+                                         user.getPosition(), user.getRole()))
                                 .collect(Collectors.toList());
 
                 List<SubTaskResponseDto> subTasks = task.getSubtasks().stream()

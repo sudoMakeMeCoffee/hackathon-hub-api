@@ -26,7 +26,7 @@ public class SubTaskResponseDto {
     public static SubTaskResponseDto fromEntity(SubTask subTask) {
 
         List<UserResponseDto> assignees = subTask.getAssignedUsers().stream()
-                .map(user -> new UserResponseDto(user.getId(), user.getUsername(), user.getEmail(), user.getRole()))
+                .map(user -> new UserResponseDto(user.getId(), user.getUsername(), user.getEmail(), user.getPosition(), user.getRole()))
                 .collect(Collectors.toList());
 
         return new SubTaskResponseDto(
