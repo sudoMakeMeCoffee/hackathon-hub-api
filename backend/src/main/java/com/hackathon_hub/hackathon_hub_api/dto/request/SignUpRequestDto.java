@@ -24,5 +24,8 @@ public class SignUpRequestDto {
     @Size(min = 8, message = "Password must have at least 8 characters.")
     private String password;
 
+    @NotBlank(message = "Position is required.")
+    private String position;
+
     private Role role;
 }

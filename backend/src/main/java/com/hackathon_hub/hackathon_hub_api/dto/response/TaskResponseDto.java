@@ -1,10 +1,7 @@
 package com.hackathon_hub.hackathon_hub_api.dto.response;
 
 import com.hackathon_hub.hackathon_hub_api.entity.Task;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +12,7 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class TaskResponseDto {
         private UUID id;
         private String title;
@@ -23,6 +21,8 @@ public class TaskResponseDto {
         private boolean isCompleted;
         private List<UserResponseDto> taskAssignees;
         private List<SubTaskResponseDto> subTasks;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
 
         public static TaskResponseDto fromEntity(Task task) {
 
@@ -41,7 +41,9 @@ public class TaskResponseDto {
                                 task.getDeadline(),
                                 task.isCompleted(),
                                 users,
-                                subTasks
+                                subTasks,
+                                task.getCreatedAt(),
+                                task.getUpdatedAt()
 
                 );
         }
