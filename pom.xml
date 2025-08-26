@@ -102,6 +102,7 @@
     </dependencies>
 
     <build>
+        <finalName>application</finalName>
         <plugins>
             <!-- Compiler plugin for Java 17 -->
             <plugin>
