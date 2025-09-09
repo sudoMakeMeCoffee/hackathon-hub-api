@@ -82,8 +82,8 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtUtil.generateToken(userDetails);
 
 
-        ResponseCookie cookie = ResponseCookie.from("jwt", token).httpOnly(true).secure(false)  // set to true in production
-                .path("/").maxAge(24 * 60 * 60).sameSite("Lax").build();
+        ResponseCookie cookie = ResponseCookie.from("jwt", token).httpOnly(true).secure(true)  // set to true in production
+                .path("/").maxAge(24 * 60 * 60).sameSite("NoneNone").build();
 
         return SignInResult.builder().cookie(cookie).userResponseDto(user).build();
 
@@ -118,7 +118,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseCookie logout() {
-        return ResponseCookie.from("jwt", "").httpOnly(true).secure(false).path("/").maxAge(0).sameSite("Lax").build();
+        return ResponseCookie.from("jwt", "").httpOnly(true).secure(true).path("/").maxAge(0).sameSite("None").build();
     }
 
 }
